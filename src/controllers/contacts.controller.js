@@ -84,7 +84,7 @@ async function sendContactMail(req, res, next) {
 
         const mailData = {
             from: 'Support Center <' + process.env.SMTP_USER_EMAIL + '>',  // sender address
-            to: email,   // list of receivers
+            to: 'doniputrapurbawa@gmail.com',   // list of receivers (but for now it owner email to get notice)
             subject: subject,
             // text: text,
             html: htmlText,
