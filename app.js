@@ -8,16 +8,15 @@ const morgan = require('morgan');
 // Defining the Express app
 const app = express();
 
-// Defining an array to work as the database (temp solution)
-const ads = [
-    {title: 'Hello World (again)!'}
-]
+// Import other router
+const contactsRouter = require('./src/routes/contacts.route');
 
 // Addming helmet to enhance your API's security
 app.use(helmet());
 
 // Using bodyParser to parse JSON bodies into JS object
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // Enabling CORS for all request
 app.use(cors());
@@ -25,13 +24,12 @@ app.use(cors());
 // Adding morgan to log HTTP requests
 app.use(morgan('combined'));
 
-// Defining an endpoint to return all ads
+// Defining default endpoint
 app.get('/', (req, res) => {
-    res.send(ads);
+	res.json({ 'message': 'ok' });
 });
 
+// Defining contacts router
+app.use('/v1/contacts', contactsRouter);
 
-// Starting the Server
-app.listen(3001, () => {
-    console.log('Listening on port 3001')
-});
+module.exports = app;
