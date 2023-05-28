@@ -3,7 +3,7 @@ import * as model from '../models/news.js';
 import { APIResponse } from '../utils/helper.js';
 
 export async function getNews(req, res, next) {
-    model.getNews().then(result => {
+    model.getNews(req.query).then(result => {
         APIResponse(res, "Successfully get all news", 200, true, result);
     }).catch(err => {
         APIResponse(res, "Failed get all news", 500, true, err);

@@ -1,8 +1,9 @@
 import db from '../configs/db.js';
+import { queryParamGenerator } from '../utils/helper.js';
 
-export function getNews() {
+export function getNews(params) {
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM news", function (err, result, fields) {
+        db.query("SELECT * FROM news " + queryParamGenerator(params), function (err, result, fields) {
             if (err) {
                 reject(err);
             }
