@@ -11,8 +11,9 @@ const app = express();
 // Import other router
 import contactsRouter from './routes/contacts.js';
 import portfoliosRouter from './routes/portfolios.js';
-import resourcesRouter from './routes/resources.js';
 import testimonialsRouter from './routes/testimonials.js';
+import newsRouter from './routes/news.js';
+import resourcesRouter from './routes/resources.js';
 
 // Addming helmet to enhance your API's security
 app.use(helmet());
@@ -36,6 +37,7 @@ app.get('/', (req, res) => {
 app.use('/v1/public/contacts', contactsRouter);
 app.use('/v1/public/portfolios', portfoliosRouter);
 app.use('/v1/public/testimonials', testimonialsRouter);
+app.use('/v1/public/news', newsRouter);
 app.use('/v1/public/resources', resourcesRouter);
 
 export default app
