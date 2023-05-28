@@ -1,5 +1,5 @@
 // Importing the dependencies 
-import { APIResponse } from '../utils/helper.util.js'
+import { APIResponse } from '../utils/helper.js'
 
 export function errorChecks(err, req, res, next) {
 	if (err.status == 404) {

@@ -1,7 +1,7 @@
 // Importing the dependencies 
 import * as model from '../models/contacts.js';
 import nodemailer from 'nodemailer';
-import { APIResponse } from '../utils/helper.util.js';
+import { APIResponse } from '../utils/helper.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
