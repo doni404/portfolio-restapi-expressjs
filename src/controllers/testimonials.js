@@ -3,7 +3,7 @@ import * as model from '../models/testimonials.js';
 import { APIResponse } from '../utils/helper.js';
 
 export async function getTestimonials(req, res, next) {
-    model.getTestimonials().then(result => {
+    model.getTestimonials(req.query).then(result => {
         APIResponse(res, "Successfully get all testimonials", 200, true, result);
     }).catch(err => {
         APIResponse(res, "Failed get all testimonials", 500, true, err);
