@@ -1,4 +1,5 @@
 // Importing the dependencies 
+import * as model from '../models/contacts.js';
 import nodemailer from 'nodemailer';
 import { APIResponse } from '../utils/helper.util.js';
 import dotenv from 'dotenv';
@@ -97,7 +98,21 @@ export async function sendContactMail(req, res, next) {
                 console.error('Error with SMTP credentials');
                 next(error); // throw to custom middleware
             } else {
-                APIResponse(res, "Mail sent successfully " + info.messageId, 200, true, null);
+                // Inserting data to database
+                let data = {
+                    "name": name,
+                    "email": email,
+                    "subject": subject,
+                    "message": message,
+                    "created_at": new Date()
+                }
+                model.createContact(data).then(result => {
+                    console.log("res : ", result);
+                    APIResponse(res, "Mail sent and data recorded successfully" + info.messageId, 200, true, result);
+                }).catch(err => {
+                    console.log("error when create data : ", err)
+                    APIResponse(res, "Mail sent, but data is not recorded !" + info.messageId, 200, true, null);
+                });
             }
         });
     } catch (err) {
