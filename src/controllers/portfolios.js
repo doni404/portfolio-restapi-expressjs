@@ -3,7 +3,7 @@ import * as model from '../models/portfolios.js';
 import { APIResponse } from '../utils/helper.js';
 
 export async function getPortfolios(req, res, next) {
-    model.getPortfolios().then(result => {
+    model.getPortfolios(req.query).then(result => {
         APIResponse(res, "Successfully get all portfolios", 200, true, result);
     }).catch(err => {
         APIResponse(res, "Failed get all portfolios", 500, true, err);

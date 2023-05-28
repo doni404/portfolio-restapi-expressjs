@@ -1,8 +1,9 @@
 import db from '../configs/db.js';
+import { queryParamGenerator } from '../utils/helper.js';
 
-export function getPortfolios() {
+export function getPortfolios(params) {
     return new Promise((resolve, reject) => {
-        db.query("SELECT * FROM portfolios", function(err, result, fields) {
+        db.query("SELECT * FROM portfolios " + queryParamGenerator(params), function(err, result, fields) {
             if (err) {
                 reject(err);
             }
