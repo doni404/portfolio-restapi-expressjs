@@ -1,10 +1,11 @@
 // Importing the dependencies 
-const nodemailer = require('nodemailer');
-const helper = require('../utils/helper.util');
-require('dotenv').config();
+import nodemailer from 'nodemailer';
+import { APIResponse } from '../utils/helper.util.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 // Service load here if needed
-
 // create reusable transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
     port: process.env.SMTP_SERVICE_PORT,               // true for 465, false for other ports
@@ -16,7 +17,7 @@ const transporter = nodemailer.createTransport({
     secure: true,
 });
 
-async function sendContactMail(req, res, next) {
+export async function sendContactMail(req, res, next) {
     try {
         console.log("API Email called")
         const { email, name, subject, message } = req.body;
@@ -96,7 +97,7 @@ async function sendContactMail(req, res, next) {
                 console.error('Error with SMTP credentials');
                 next(error); // throw to custom middleware
             } else {
-                helper.APIResponse(res, "Mail sent successfully " + info.messageId, 200, true, null);
+                APIResponse(res, "Mail sent successfully " + info.messageId, 200, true, null);
             }
         });
     } catch (err) {
@@ -104,7 +105,3 @@ async function sendContactMail(req, res, next) {
         next(err);
     }
 }
-
-module.exports = {
-    sendContactMail
-};

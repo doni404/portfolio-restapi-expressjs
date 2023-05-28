@@ -1,4 +1,4 @@
-function APIResponse(res, message, code, status, data) {
+export function APIResponse(res, message, code, status, data) {
     var response = {
         "code": code,
         "success" : status,
@@ -11,7 +11,3 @@ function APIResponse(res, message, code, status, data) {
 
     res.status(code).send(response);
 }
-
-module.exports = {
-    APIResponse
-};
