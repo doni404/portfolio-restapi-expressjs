@@ -1,15 +1,15 @@
 // Importing the dependencies 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
+import cors from 'cors'
+import express from 'express'
+import helmet from 'helmet';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
 
 // Defining the Express app
 const app = express();
 
 // Import other router
-const contactsRouter = require('./src/routes/contacts.route');
+import contactsRouter from './routes/contacts.js';
 
 // Addming helmet to enhance your API's security
 app.use(helmet());
@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 	res.json({ 'message': 'ok' });
 });
 
-// Defining contacts router
-app.use('/v1/contacts', contactsRouter);
+// Defining v1 API
+app.use('/v1/public/contacts', contactsRouter);
 
-module.exports = app;
+export default app
