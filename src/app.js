@@ -16,7 +16,11 @@ import newsRouter from './routes/news.js';
 import resourcesRouter from './routes/resources.js';
 
 // Addming helmet to enhance your API's security
-app.use(helmet());
+// app.use(helmet({
+// 	crossOriginResourcePolicy: false,
+// }));
+// To handle resources cross origin
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 // Using bodyParser to parse JSON bodies into JS object
 app.use(bodyParser.json());
