@@ -1,0 +1,58 @@
+# This is a basic workflow to help you get started with Actions
+
+name: PROD CD
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "master" branch
+  push:
+    branches: ["master"]
+
+  # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+
+  deploy:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      PRIVATE_KEY: ${{ secrets.AWS_PRIVATE_KEY  }}
+      HOSTNAME: ${{ secrets.HOSTNAME  }}
+      USER_NAME: ${{ secrets.USERNAME  }}
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a set of commands using the runner's shell
+      - name: Deploy to ec2
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
+            # Use a login shell to ensure all environment variables (like nvm, node, pm2) are correctly loaded
+            source ~/.bashrc
+
+            # Navigate to the app directory
+            cd apps/portfolio-restapi-expressjs
+
+            # Update the codebase
+            git switch master
+            git fetch origin master
+            git pull origin master
+
+            # Install dependencies
+            npm ci
+            
+            # Check if PM2 knows about our app
+            if pm2 show portfolio-restapi-expressjs > /dev/null 2>&1; then
+              echo "Application is registered in PM2, restarting..."
+              pm2 restart portfolio-restapi-expressjs
+            else
+              echo "Application is not registered in PM2, starting..."
+              pm2 start npm --name "portfolio-restapi-expressjs" -- run start
+            fi
+          '
